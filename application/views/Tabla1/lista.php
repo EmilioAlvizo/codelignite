@@ -1,37 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Lista de Registros</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" />
+    <title>tabla 1</title>
 </head>
 <body>
     <h1>Tabla 1 - Registros</h1>
-    <a href="<?php echo base_url('tabla1/crear'); ?>">Nuevo Registro</a>
-    
-    <table border="1">
+
+    <a href="<?= site_url('tabla1/crear') ?>" class="btn btn-primary mb-3">
+        + Nuevo Registro
+    </a>
+
+    <table id="miTabla" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Número</th>
-                <th>Objeto</th>
-                <th>Valor</th>
-                <th>Fecha</th>
+                <th>Numero</th>
+                <th>Edad</th>
+                <th>Cantidad</th>
+                <th>Poblacion</th>
+                <th>Precio</th>
+                <th>Porcentaje</th>
+                <th>Temperatura</th>
+                <th>Saldo</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Codigo</th>
+                <th>Notas</th>
+                <th>Fecha Registro</th>
+                <th>Fecha Nacimiento</th>
+                <th>Hora Entrada</th>
+                <th>Fecha Mod</th>
+                <th>Activo</th>
+                <th>UUID</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
-            <?php foreach($registros as $registro): ?>
-            <tr>
-                <td><?php echo $registro->numero; ?></td>
-                <td><?php echo $registro->objeto; ?></td>
-                <td><?php echo $registro->valor; ?></td>
-                <td><?php echo $registro->fecha; ?></td>
-                <td>
-                    <a href="<?php echo base_url('tabla1/editar/'.$registro->numero); ?>">Editar</a>
-                    <a href="<?php echo base_url('tabla1/eliminar/'.$registro->numero); ?>" 
-                       onclick="return confirm('¿Eliminar este registro?')">Eliminar</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
+        <tbody></tbody> <!-- Ajax llena esto -->
     </table>
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
+    <script>
+        $('#miTabla').DataTable({
+        serverSide: false,       // activa el modo server-side
+        processing: true,       // muestra "Procesando..." mientras carga
+        ajax: {
+            url: '<?= site_url("tabla1/ajax_lista") ?>',
+            type: 'GET'
+        },
+        columns: [
+            { data: 0 },  // numero
+            { data: 1 },  // edad
+            { data: 2 },  // cantidad
+            { data: 3 },  // poblacion
+            { data: 4 },  // precio
+            { data: 5 },  // porcentaje
+            { data: 6 },  // temperatura
+            { data: 7 },  // saldo
+            { data: 8 },  // nombre
+            { data: 9 },  // descripcion
+            { data: 10 }, // codigo
+            { data: 11 }, // notas
+            { data: 12 }, // fecha_registro
+            { data: 13 }, // fecha_nacimiento
+            { data: 14 }, // hora_entrada
+            { data: 15 }, // fecha_mod
+            { data: 16 }, // activo
+            { data: 17 }, // uuid
+            { data: 18, orderable: false }  // acciones
+        ]
+    });
+    </script>
 </body>
 </html>

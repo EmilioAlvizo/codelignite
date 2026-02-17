@@ -1,4 +1,5 @@
 <?php
+// application/controllers/Tabla1.php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tabla1 extends CI_Controller {
@@ -9,24 +10,65 @@ class Tabla1 extends CI_Controller {
         $this->load->helper('url');
     }
 
+    // Endpoint Ajax para DataTables
+    public function ajax_lista() {
+        $registros = $this->Tabla1_model->obtener_todos();
+
+        $data = array();
+        foreach ($registros as $row) {
+            $data[] = array(
+                $row->numero,
+                $row->edad,
+                $row->cantidad,
+                $row->poblacion,
+                number_format($row->precio, 2),
+                $row->porcentaje,
+                $row->temperatura,
+                number_format($row->saldo, 2),
+                $row->nombre,
+                $row->descripcion,
+                $row->codigo,
+                $row->notas,
+                $row->fecha_registro,
+                $row->fecha_nacimiento,
+                $row->hora_entrada,
+                $row->fecha_mod,
+                $row->activo ? 'Sí' : 'No',
+                $row->uuid,
+                // Botones de acción
+                '<a href="'.site_url('tabla1/editar/'.$row->numero).'" 
+                    class="btn btn-xs btn-warning">Editar</a> 
+                 <a href="'.site_url('tabla1/eliminar/'.$row->numero).'" 
+                    class="btn btn-xs btn-danger"
+                    onclick="return confirm(\'¿Eliminar?\')">Eliminar</a>'
+            );
+        }
+
+        echo json_encode(array('data' => $data));
+    }
+    
     // Listar todos los registros
     public function index() {
-        $data['registros'] = $this->Tabla1_model->obtener_todos();
-        $this->load->view('tabla1/lista', $data);
-    }
-
-    // Mostrar formulario de creación
-    public function crear() {
-        $this->load->view('tabla1/formulario');
+        //$data['registros'] = $this->Tabla1_model->obtener_todos();
+        //$this->load->view('tabla1/lista', $data);
+        $this->load->view('tabla1/lista');
     }
 
     // Guardar nuevo registro
     public function guardar() {
         $datos = array(
-            'numero' => $this->input->post('numero'),
-            'objeto' => $this->input->post('objeto'),
-            'valor' => $this->input->post('valor'),
-            'fecha' => date('Y-m-d H:i:s')
+            'edad' => $this->input->post('edad'),
+            'cantidad' => $this->input->post('cantidad'),
+            'poblacion' => $this->input->post('poblacion'),
+            //'precio' => $this->input->post('precio'),
+            'porcentaje' => $this->input->post('porcentaje'),
+            'temperatura' => $this->input->post('temperatura'),
+            'saldo' => $this->input->post('saldo'),
+            'nombre' => $this->input->post('nombre'),
+            //'descripcion' => $this->input->post('descripcion'),
+            //'codigo' => $this->input->post('codigo'),
+            //'notas' => $this->input->post('notas'),
+
         );
 
         if ($this->Tabla1_model->insertar($datos)) {
@@ -36,19 +78,21 @@ class Tabla1 extends CI_Controller {
         }
     }
 
-    // Mostrar formulario de edición
-    public function editar($numero) {
-        $data['registro'] = $this->Tabla1_model->obtener_por_id($numero);
-        $this->load->view('tabla1/formulario_editar', $data);
-    }
-
     // Actualizar registro
     public function actualizar() {
         $numero = $this->input->post('numero');
         $datos = array(
-            'objeto' => $this->input->post('objeto'),
-            'valor' => $this->input->post('valor'),
-            'fecha' => date('Y-m-d H:i:s')
+            'edad' => $this->input->post('edad'),
+            'cantidad' => $this->input->post('cantidad'),
+            'poblacion' => $this->input->post('poblacion'),
+            //'precio' => $this->input->post('precio'),
+            'porcentaje' => $this->input->post('porcentaje'),
+            'temperatura' => $this->input->post('temperatura'),
+            'saldo' => $this->input->post('saldo'),
+            'nombre' => $this->input->post('nombre'),
+            //'descripcion' => $this->input->post('descripcion'),
+            //'codigo' => $this->input->post('codigo'),
+            //'notas' => $this->input->post('notas'),
         );
 
         if ($this->Tabla1_model->actualizar($numero, $datos)) {
@@ -58,12 +102,18 @@ class Tabla1 extends CI_Controller {
         }
     }
 
-    // Eliminar registro
-    public function eliminar($numero) {
-        if ($this->Tabla1_model->eliminar($numero)) {
-            redirect('tabla1');
-        } else {
-            echo "Error al eliminar";
-        }
+    // Mostrar formulario de creación
+    public function crear() {
+        $this->load->view('tabla1/formulario');
     }
+
+    // Mostrar formulario de edición
+    public function editar($numero) {
+        $data['registro'] = $this->Tabla1_model->obtener_por_id($numero);
+        $this->load->view('tabla1/formulario_editar', $data);
+    }
+
+    
+
+   
 }

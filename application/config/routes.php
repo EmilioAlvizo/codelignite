@@ -52,4 +52,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-$route['tabla1'] = 'tabla1/index';
+$route['tabla2'] = 'tabla2/index';
+$route['tabla2'] = 'tabla2';

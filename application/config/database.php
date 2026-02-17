@@ -75,6 +75,31 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
+	'hostname' => '172.31.27.44',
+	'username' => 'desarrollo',
+	'password' => 'd47Aba5E_t3s7',
+	'database' => 'Prueba_David',
+	'dbdriver' => 'sqlsrv',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'options' => array(
+		'Scrollable' => FALSE
+	)
+);
+/*
+$db['default'] = array(
+	'dsn'	=> '',
 	'hostname' => 'HP\SQLEXPRESS',
 	'username' => 'sajg',
 	'password' => 'Sajg!.25',
@@ -94,3 +119,4 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+*/

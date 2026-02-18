@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" />
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" /> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.tailwindcss.css" />
     <title>tabla 1</title>
 </head>
 <body>
@@ -42,9 +43,14 @@
     
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
+
+    <script src="https://cdn.datatables.net/2.3.7/js/dataTables.tailwindcss.js" ></script>
+    <script src="https://cdn.tailwindcss.com" ></script>
+
+
     <script>
         $('#miTabla').DataTable({
-        serverSide: false,       // activa el modo server-side
+        serverSide: true,       // activa el modo server-side
         processing: true,       // muestra "Procesando..." mientras carga
         ajax: {
             url: '<?= site_url("tabla1/ajax_lista") ?>',
@@ -54,11 +60,27 @@
             { data: 0 },  // numero
             { data: 1 },  // edad
             { data: 2 },  // cantidad
-            { data: 3 },  // poblacion
+            { data: 3,
+                render: function(data, type) {
+                    var num = DataTable.render
+                    .number(',')
+                    .display(data);
+
+                    return num;
+                }
+             },  // poblacion
             { data: 4 },  // precio
             { data: 5 },  // porcentaje
             { data: 6 },  // temperatura
-            { data: 7 },  // saldo
+            { data: 7,
+            render: function(data, type) {
+                var num = DataTable.render
+                .number(',', '.', 2, '$')
+                .display(data);
+
+                return num;
+            }
+             },  // saldo
             { data: 8 },  // nombre
             { data: 9 },  // descripcion
             { data: 10 }, // codigo

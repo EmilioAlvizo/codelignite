@@ -12,6 +12,57 @@ class Tabla1 extends CI_Controller {
 
     // Endpoint Ajax para DataTables
     public function ajax_lista() {
+        // Parámetros que envía DataTables automáticamente
+        $draw      = intval($this->input->get('draw'));
+        $start     = intval($this->input->get('start'));
+        $length    = intval($this->input->get('length'));
+        $busqueda  = $this->input->get('search')['value'] ?? '';
+        $orden_col = intval($this->input->get('order')[0]['column'] ?? 0);
+        $orden_dir = $this->input->get('order')[0]['dir'] ?? 'asc';
+
+        $total     = $this->Tabla1_model->contar_total();
+        $filtrado  = $this->Tabla1_model->contar_filtrado($busqueda);
+        $registros = $this->Tabla1_model->obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir);
+
+        $data = array();
+        foreach ($registros as $row) {
+            $data[] = array(
+                $row->numero,
+                $row->edad,
+                $row->cantidad,
+                $row->poblacion,
+                number_format($row->precio, 2),
+                $row->porcentaje,
+                $row->temperatura,
+                number_format($row->saldo, 2),
+                $row->nombre,
+                $row->descripcion,
+                $row->codigo,
+                $row->notas,
+                $row->fecha_registro,
+                $row->fecha_nacimiento,
+                $row->hora_entrada,
+                $row->fecha_mod,
+                $row->activo ? 'Sí' : 'No',
+                $row->uuid,
+                // Botones de acción
+                '<a href="'.site_url('tabla1/editar/'.$row->numero).'" 
+                    class="btn btn-xs btn-warning">Editar</a> 
+                 <a href="'.site_url('tabla1/eliminar/'.$row->numero).'" 
+                    class="btn btn-xs btn-danger"
+                    onclick="return confirm(\'¿Eliminar?\')">Eliminar</a>'
+            );
+        }
+
+        echo json_encode([
+            'draw'            => $draw,
+            'recordsTotal'    => $total,
+            'recordsFiltered' => $filtrado,
+            'data'            => $data
+        ]);
+    }
+
+    /* public function ajax_lista() {
         $registros = $this->Tabla1_model->obtener_todos();
 
         $data = array();
@@ -45,7 +96,7 @@ class Tabla1 extends CI_Controller {
         }
 
         echo json_encode(array('data' => $data));
-    }
+    } */
     
     // Listar todos los registros
     public function index() {
@@ -90,15 +141,30 @@ class Tabla1 extends CI_Controller {
             'temperatura' => $this->input->post('temperatura'),
             'saldo' => $this->input->post('saldo'),
             'nombre' => $this->input->post('nombre'),
-            //'descripcion' => $this->input->post('descripcion'),
-            //'codigo' => $this->input->post('codigo'),
-            //'notas' => $this->input->post('notas'),
+            'descripcion' => $this->input->post('descripcion'),
+            'codigo' => $this->input->post('codigo'),
+            'notas' => $this->input->post('notas'),
+            'fecha_registro' => $this->input->post('fecha_registro'),
+            'fecha_nacimiento' => $this->input->post('fecha_nacimiento'),
+            'hora_entrada' => $this->input->post('hora_entrada'),
+            'fecha_mod' => $this->input->post('fecha_mod'),
+            'activo' => $this->input->post('activo'),
+
+
         );
 
         if ($this->Tabla1_model->actualizar($numero, $datos)) {
             redirect('tabla1');
         } else {
             echo "Error al actualizar";
+        }
+    }
+
+    public function eliminar($numero) {
+        if ($this->Tabla1_model->eliminar($numero)) {
+            redirect('tabla1');
+        }   else {
+            echo "error al eliminar";
         }
     }
 

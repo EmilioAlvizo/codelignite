@@ -116,9 +116,14 @@ class Tabla1 extends CI_Controller {
             'temperatura' => $this->input->post('temperatura'),
             'saldo' => $this->input->post('saldo'),
             'nombre' => $this->input->post('nombre'),
-            //'descripcion' => $this->input->post('descripcion'),
-            //'codigo' => $this->input->post('codigo'),
-            //'notas' => $this->input->post('notas'),
+            'descripcion' => $this->input->post('descripcion'),
+            'codigo' => $this->input->post('codigo'),
+            'notas' => $this->input->post('notas'),
+            'fecha_registro' => $this->input->post('fecha_registro'),
+            'fecha_nacimiento' => $this->input->post('fecha_nacimiento'),
+            'hora_entrada' => $this->input->post('hora_entrada'),
+            'fecha_mod' => $this->input->post('fecha_mod'),
+            'activo' => $this->input->post('activo'),
 
         );
 

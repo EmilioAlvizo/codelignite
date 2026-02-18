@@ -46,7 +46,7 @@
         <input type="text" name="notas" value="<?php echo $registro->notas; ?>" ><br><br>
 
         <label>fecha_registro:</label>
-        <input type="date" name="fecha_registro" value="<?php echo $registro->fecha_registro; ?>" ><br><br>
+        <input type="datetime-local" name="fecha_registro" value="<?php echo $registro->fecha_registro; ?>" ><br><br>
 
         <label>fecha_nacimiento:</label>
         <input type="date" name="fecha_nacimiento" value="<?php echo $registro->fecha_nacimiento; ?>" ><br><br>

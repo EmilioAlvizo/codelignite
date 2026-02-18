@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" /> -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.tailwindcss.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" />
     <title>tabla 1</title>
 </head>
 <body>
@@ -44,12 +45,13 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
 
-    <script src="https://cdn.datatables.net/2.3.7/js/dataTables.tailwindcss.js" ></script>
-    <script src="https://cdn.tailwindcss.com" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js" ></script>
+    <script src="https://cdn.datatables.net/2.3.7/js/dataTables.bootstrap5.js" ></script>
 
 
     <script>
         $('#miTabla').DataTable({
+        scrollX: true,
         serverSide: true,       // activa el modo server-side
         processing: true,       // muestra "Procesando..." mientras carga
         ajax: {

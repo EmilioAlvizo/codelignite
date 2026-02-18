@@ -48,9 +48,9 @@ class Tabla1 extends CI_Controller {
                 // Botones de acción
                 '<a href="'.site_url('tabla1/editar/'.$row->numero).'" 
                     class="btn btn-xs btn-warning">Editar</a> 
-                 <a href="'.site_url('tabla1/eliminar/'.$row->numero).'" 
-                    class="btn btn-xs btn-danger"
-                    onclick="return confirm(\'¿Eliminar?\')">Eliminar</a>'
+                 <button class="btn btn-xs btn-danger btn-eliminar" data-id="'.$row->numero.'">
+Eliminar
+</button>'
             );
         }
 
@@ -61,7 +61,8 @@ class Tabla1 extends CI_Controller {
             'data'            => $data
         ]);
     }
-
+//reload
+//
     /* public function ajax_lista() {
         $registros = $this->Tabla1_model->obtener_todos();
 
@@ -128,9 +129,11 @@ class Tabla1 extends CI_Controller {
         );
 
         if ($this->Tabla1_model->insertar($datos)) {
-            redirect('tabla1');
+            //redirect('tabla1');
+            echo json_encode(['status' => 'success']);
         } else {
             echo "Error al guardar";
+            echo json_encode(['status' => 'error']);
         }
     }
 
@@ -159,7 +162,8 @@ class Tabla1 extends CI_Controller {
         );
 
         if ($this->Tabla1_model->actualizar($numero, $datos)) {
-            redirect('tabla1');
+            echo json_encode(['status' => 'success']);           
+            //redirect('tabla1');
         } else {
             echo "Error al actualizar";
         }
@@ -167,7 +171,8 @@ class Tabla1 extends CI_Controller {
 
     public function eliminar($numero) {
         if ($this->Tabla1_model->eliminar($numero)) {
-            redirect('tabla1');
+            echo "<script>tabla.ajax.reload(null, false);</script>";
+            //redirect('tabla1');
         }   else {
             echo "error al eliminar";
         }

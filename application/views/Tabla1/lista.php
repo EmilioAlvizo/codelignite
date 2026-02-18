@@ -15,6 +15,8 @@
         + Nuevo Registro
     </a>
 
+    <div style="height: 1000px; background-color: #8ac0f5;"></div>
+
     <table id="miTabla" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -50,7 +52,7 @@
 
 
     <script>
-        $('#miTabla').DataTable({
+        var tabla = $('#miTabla').DataTable({
         scrollX: true,
         serverSide: true,       // activa el modo server-side
         processing: true,       // muestra "Procesando..." mientras carga
@@ -96,6 +98,24 @@
             { data: 18, orderable: false }  // acciones
         ]
     });
+
+    $(document).on('click', '.btn-eliminar', function() {
+
+    var id = $(this).data('id');
+
+    if(confirm("¿Eliminar registro?")) {
+
+        $.ajax({
+            url: "<?= site_url('tabla1/eliminar') ?>/" + id,
+            type: "POST",
+            success: function(response) {
+                tabla.ajax.reload(null, false); // 🔥 recarga SOLO la tabla
+            }
+        });
+
+    }
+});
+
     </script>
 </body>
 </html>

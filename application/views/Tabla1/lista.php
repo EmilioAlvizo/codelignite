@@ -13,7 +13,7 @@
 
 <body>
     <div class="container mt-4">
-        <div style="height: 1000px; background-color: #8ac0f5;"></div>
+        <!-- <div style="height: 1000px; background-color: #8ac0f5;"></div> -->
 
         <h1>Tabla 1 - Registros</h1>
 
@@ -175,6 +175,10 @@
                 url: '<?= site_url("tabla1/ajax_lista") ?>',
                 type: 'GET'
             },
+            columnDefs: [{
+                targets: 13,
+                render: DataTable.render.datetime('d MMM yyyy')
+            }],
             columns: [{
                     data: 0
                 },
@@ -243,7 +247,7 @@
         });
 
         var modal = new bootstrap.Modal(document.getElementById('modalFormulario')); 
-        
+
         // limpiar formulario al abrir nuevo registro
         $('#btnNuevoRegistro').click(function() {
             $('#formRegistro')[0].reset();

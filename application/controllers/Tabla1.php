@@ -7,7 +7,12 @@ class Tabla1 extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Tabla1_model');
-        $this->load->helper('url');
+        $this->load->helper(['url', 'data']);
+    }
+
+    public function obtener($numero) {
+        $registro = $this->Tabla1_model->obtener_por_id($numero);
+        echo json_encode($registro);
     }
 
     // Endpoint Ajax para DataTables
@@ -46,11 +51,8 @@ class Tabla1 extends CI_Controller {
                 $row->activo ? 'Sí' : 'No',
                 $row->uuid,
                 // Botones de acción
-                '<a href="'.site_url('tabla1/editar/'.$row->numero).'" 
-                    class="btn btn-xs btn-warning">Editar</a> 
-                 <button class="btn btn-xs btn-danger btn-eliminar" data-id="'.$row->numero.'">
-Eliminar
-</button>'
+                '<button class="btn btn-xs btn-warning btn-editar" data-id="'.$row->numero.'">Editar</button> 
+                <button class="btn btn-xs btn-danger btn-eliminar" data-id="'.$row->numero.'">Eliminar</button>'
             );
         }
 
@@ -61,8 +63,102 @@ Eliminar
             'data'            => $data
         ]);
     }
-//reload
-//
+    
+    // Listar todos los registros
+    public function index() {
+        //$data['registros'] = $this->Tabla1_model->obtener_todos();
+        //$this->load->view('tabla1/lista', $data);
+        $this->load->view('tabla1/lista');
+    }
+
+    // Guardar nuevo registro
+    public function guardar() {
+        $datos = array(
+            'edad' => limpiar_dato($this->input->post('edad')),
+            'cantidad' => limpiar_dato($this->input->post('cantidad')),
+            'poblacion' => limpiar_dato($this->input->post('poblacion')),
+            //'precio' => $this->input->post('precio'),
+            'porcentaje' => limpiar_dato($this->input->post('porcentaje')),
+            'temperatura' => limpiar_dato($this->input->post('temperatura')),
+            'saldo' => limpiar_dato($this->input->post('saldo')),
+            'nombre' => limpiar_dato($this->input->post('nombre')),
+            'descripcion' => limpiar_dato($this->input->post('descripcion')),
+            'codigo' => limpiar_dato($this->input->post('codigo')),
+            'notas' => limpiar_dato($this->input->post('notas')),
+            'fecha_registro' => limpiar_dato(formato_fecha($this->input->post('fecha_registro'))),
+            'fecha_nacimiento' => limpiar_dato($this->input->post('fecha_nacimiento')),
+            'hora_entrada' => limpiar_dato($this->input->post('hora_entrada')),
+            'fecha_mod' => limpiar_dato($this->input->post('fecha_mod')),
+            'activo' => limpiar_dato($this->input->post('activo')),
+
+        );
+
+        if ($this->Tabla1_model->insertar($datos)) {
+            //redirect('tabla1');
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo "Error al guardar";
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    // Actualizar registro
+    public function actualizar() {
+        $numero = $this->input->post('numero');
+
+        // Imprimir para debug
+        /* echo "Número recibido: " . $numero . "<br>";
+        echo "POST completo: ";
+        print_r($_POST); */
+        //die(); // detener ejecución aquí
+
+        $datos = array(
+            'edad' => limpiar_dato($this->input->post('edad')),
+            'cantidad' => limpiar_dato($this->input->post('cantidad')),
+            'poblacion' => limpiar_dato($this->input->post('poblacion')),
+            //'precio' => $this->input->post('precio'),
+            'porcentaje' => limpiar_dato($this->input->post('porcentaje')),
+            'temperatura' => limpiar_dato($this->input->post('temperatura')),
+            'saldo' => limpiar_dato($this->input->post('saldo')),
+            'nombre' => limpiar_dato($this->input->post('nombre')),
+            'descripcion' => limpiar_dato($this->input->post('descripcion')),
+            'codigo' => limpiar_dato($this->input->post('codigo')),
+            'notas' => limpiar_dato($this->input->post('notas')),
+            'fecha_registro' => limpiar_dato(formato_fecha($this->input->post('fecha_registro'))),
+            'fecha_nacimiento' => limpiar_dato($this->input->post('fecha_nacimiento')),
+            'hora_entrada' => limpiar_dato($this->input->post('hora_entrada')),
+            'fecha_mod' => limpiar_dato($this->input->post('fecha_mod')),
+            'activo' => limpiar_dato($this->input->post('activo')),
+        );
+
+        if ($this->Tabla1_model->actualizar($numero, $datos)) {
+            echo json_encode(['status' => 'success']);           
+            //redirect('tabla1');
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function eliminar($numero) {
+        if ($this->Tabla1_model->eliminar($numero)) {
+            echo "<script>tabla.ajax.reload(null, false);</script>";
+            //redirect('tabla1');
+        }   else {
+            echo "error al eliminar";
+        }
+    }
+
+    // Mostrar formulario de creación
+    public function crear() {
+        $this->load->view('tabla1/formulario');
+    }
+
+    // Mostrar formulario de edición
+    public function editar($numero) {
+        $data['registro'] = $this->Tabla1_model->obtener_por_id($numero);
+        $this->load->view('tabla1/formulario_editar', $data);
+    }
+
     /* public function ajax_lista() {
         $registros = $this->Tabla1_model->obtener_todos();
 
@@ -98,98 +194,5 @@ Eliminar
 
         echo json_encode(array('data' => $data));
     } */
-    
-    // Listar todos los registros
-    public function index() {
-        //$data['registros'] = $this->Tabla1_model->obtener_todos();
-        //$this->load->view('tabla1/lista', $data);
-        $this->load->view('tabla1/lista');
-    }
-
-    // Guardar nuevo registro
-    public function guardar() {
-        $datos = array(
-            'edad' => $this->input->post('edad'),
-            'cantidad' => $this->input->post('cantidad'),
-            'poblacion' => $this->input->post('poblacion'),
-            //'precio' => $this->input->post('precio'),
-            'porcentaje' => $this->input->post('porcentaje'),
-            'temperatura' => $this->input->post('temperatura'),
-            'saldo' => $this->input->post('saldo'),
-            'nombre' => $this->input->post('nombre'),
-            'descripcion' => $this->input->post('descripcion'),
-            'codigo' => $this->input->post('codigo'),
-            'notas' => $this->input->post('notas'),
-            'fecha_registro' => $this->input->post('fecha_registro'),
-            'fecha_nacimiento' => $this->input->post('fecha_nacimiento'),
-            'hora_entrada' => $this->input->post('hora_entrada'),
-            'fecha_mod' => $this->input->post('fecha_mod'),
-            'activo' => $this->input->post('activo'),
-
-        );
-
-        if ($this->Tabla1_model->insertar($datos)) {
-            //redirect('tabla1');
-            echo json_encode(['status' => 'success']);
-        } else {
-            echo "Error al guardar";
-            echo json_encode(['status' => 'error']);
-        }
-    }
-
-    // Actualizar registro
-    public function actualizar() {
-        $numero = $this->input->post('numero');
-        $datos = array(
-            'edad' => $this->input->post('edad'),
-            'cantidad' => $this->input->post('cantidad'),
-            'poblacion' => $this->input->post('poblacion'),
-            //'precio' => $this->input->post('precio'),
-            'porcentaje' => $this->input->post('porcentaje'),
-            'temperatura' => $this->input->post('temperatura'),
-            'saldo' => $this->input->post('saldo'),
-            'nombre' => $this->input->post('nombre'),
-            'descripcion' => $this->input->post('descripcion'),
-            'codigo' => $this->input->post('codigo'),
-            'notas' => $this->input->post('notas'),
-            'fecha_registro' => $this->input->post('fecha_registro'),
-            'fecha_nacimiento' => $this->input->post('fecha_nacimiento'),
-            'hora_entrada' => $this->input->post('hora_entrada'),
-            'fecha_mod' => $this->input->post('fecha_mod'),
-            'activo' => $this->input->post('activo'),
-
-
-        );
-
-        if ($this->Tabla1_model->actualizar($numero, $datos)) {
-            echo json_encode(['status' => 'success']);           
-            //redirect('tabla1');
-        } else {
-            echo "Error al actualizar";
-        }
-    }
-
-    public function eliminar($numero) {
-        if ($this->Tabla1_model->eliminar($numero)) {
-            echo "<script>tabla.ajax.reload(null, false);</script>";
-            //redirect('tabla1');
-        }   else {
-            echo "error al eliminar";
-        }
-    }
-
-    // Mostrar formulario de creación
-    public function crear() {
-        $this->load->view('tabla1/formulario');
-    }
-
-    // Mostrar formulario de edición
-    public function editar($numero) {
-        $data['registro'] = $this->Tabla1_model->obtener_por_id($numero);
-        $this->load->view('tabla1/formulario_editar', $data);
-    }
-
-    
-
    
 }

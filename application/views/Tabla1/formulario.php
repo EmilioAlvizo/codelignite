@@ -1,3 +1,4 @@
+<!-- application/views/Tabla1/formulario.php -->
 <!DOCTYPE html>
 <html>
 <head>

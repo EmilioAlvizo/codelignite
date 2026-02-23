@@ -73,38 +73,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-/* $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => '172.31.27.44',
-	'username' => 'desarrollo',
-	'password' => 'd47Aba5E_t3s7',
-	'database' => 'Prueba_David',
-	'dbdriver' => 'sqlsrv',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE,
-	'options' => array(
-		'Scrollable' => FALSE
-	)
-); */
+if (!function_exists('env_db')) {
+	function env_db($key, $default = '')
+	{
+		$value = getenv($key);
+		return ($value === false || $value === '') ? $default : $value;
+	}
+}
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'HP\SQLEXPRESS',
-	'username' => 'sajg',
-	'password' => 'Sajg!.25',
-	'database' => 'sajg_20252001',
-	'dbdriver' => 'sqlsrv',
+	'hostname' => env_db('DB_HOST', 'localhost\\SQLEXPRESS'),
+	'username' => env_db('DB_USER', ''),
+	'password' => env_db('DB_PASS', ''),
+	'database' => env_db('DB_NAME', ''),
+	'dbdriver' => env_db('DB_DRIVER', 'sqlsrv'),
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
@@ -117,5 +100,5 @@ $db['default'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE
+	'save_queries' => (ENVIRONMENT !== 'production')
 );

@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$db['default'] = array(
+/* $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '172.31.27.44',
 	'username' => 'desarrollo',
@@ -96,8 +96,8 @@ $db['default'] = array(
 	'options' => array(
 		'Scrollable' => FALSE
 	)
-);
-/*
+); */
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'HP\SQLEXPRESS',
@@ -119,4 +119,3 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-*/

@@ -158,7 +158,7 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script> <!-- moment.js -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
 
@@ -175,10 +175,6 @@
                 url: '<?= site_url("tabla1/ajax_lista") ?>',
                 type: 'GET'
             },
-            columnDefs: [{
-                targets: 13,
-                render: DataTable.render.datetime('d MMM yyyy')
-            }],
             columns: [{
                     data: 0
                 },
@@ -222,16 +218,36 @@
                     data: 11
                 },
                 {
-                    data: 12
+                    data: 12,
+                    render: function(data, type, row) {
+                    // 'data' es el valor de la fecha, 'row' es la fila completa
+                    // Usa moment.js para formatear (asegúrate de tenerlo cargado)
+                    return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                }
                 },
                 {
-                    data: 13
+                    data: 13,
+                    render: function(data, type, row) {
+                    // 'data' es el valor de la fecha, 'row' es la fila completa
+                    // Usa moment.js para formatear (asegúrate de tenerlo cargado)
+                    return moment(data).format('DD/MM/YYYY');
+                } 
                 },
                 {
-                    data: 14
+                    data: 14,
+                    render: function(data, type, row) {
+                    // 'data' es el valor de la fecha, 'row' es la fila completa
+                    // Usa moment.js para formatear (asegúrate de tenerlo cargado)
+                    return moment(data, 'HH:mm:ss.SSSSSSS').format('HH:mm:ss');
+                }
                 },
                 {
-                    data: 15
+                    data: 15,
+                    render: function(data, type, row) {
+                    // 'data' es el valor de la fecha, 'row' es la fila completa
+                    // Usa moment.js para formatear (asegúrate de tenerlo cargado)
+                    return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                }
                 },
                 {
                     data: 16
@@ -298,15 +314,18 @@
                     $('#descripcion').val(data.descripcion);
                     $('#codigo').val(data.codigo);
                     $('#notas').val(data.notas); // datetime-local: "2024-01-15 10:30:00" → "2024-01-15T10:30" 
+                    //$('#fecha_registro').val(data.fecha_registro);
                     if (data.fecha_registro) {
                         var fr = data.fecha_registro.substring(0, 16).replace(' ', 'T');
                         $('#fecha_registro').val(fr);
                     }
                     $('#fecha_nacimiento').val(data.fecha_nacimiento); // time: "10:30:00.0000000" → "10:30" 
+                    //$('#hora_entrada').val(data.hora_entrada);
                     if (data.hora_entrada) {
                         var he = data.hora_entrada.substring(0, 5);
                         $('#hora_entrada').val(he);
                     } // date: "2024-01-15 10:30:00.0000000" → "2024-01-15"
+                    //$('#fecha_mod').val(data.fecha_mod);
                     if (data.fecha_mod) {
                         var fm = data.fecha_mod.substring(0, 10);
                         $('#fecha_mod').val(fm);

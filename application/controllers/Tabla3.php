@@ -1,6 +1,10 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * @property Tabla3_model $Tabla3_model
+ */
 class Tabla3 extends CI_Controller {
 
     public function __construct(){
@@ -53,13 +57,13 @@ class Tabla3 extends CI_Controller {
         ]);
     }
 
-    // obtener registro
+    /*// obtener registro
     public function obtener($id){
         $data = $this->Tabla3_model->obtener_por_id($id);
         echo json_encode($data);
     }
 
-    /* // guardar
+     // guardar
     public function guardar(){
 
         $datos = [

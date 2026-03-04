@@ -15,6 +15,7 @@
     <div class="container mt-4">
         <!-- <div style="height: 1000px; background-color: #8ac0f5;"></div> -->
 
+        
         <h1>Tabla 1 - Registros</h1>
 
         <!-- Botón que abre el modal -->
@@ -48,6 +49,37 @@
             </thead>
             <tbody></tbody> <!-- Ajax llena esto -->
         </table>
+
+        <h2>filtros personalizados</h2>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <label>Nombre:</label>
+                <input type="text" id="filtroNombre" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label>Activo:</label>
+                <select id="filtroActivo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Fecha Registro Desde:</label>
+                <input type="date" id="filtroFechaDesde" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label>&nbsp;</label>
+                <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+
+        </div>
+
     </div>
 
     <!-- Modal Bootstrap 5 -->
@@ -165,15 +197,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.bootstrap5.js"></script>
 
+    <!-- sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // recargar tabla al hacer click en "filtrar"
+        $('#btnFiltrar').click(function(){
+            tabla.ajax.reload();
+        });
+
         var tabla = $('#miTabla').DataTable({
             scrollX: true,
             serverSide: true, // activa el modo server-side
             processing: true, // muestra "Procesando..." mientras carga
             ajax: {
                 url: '<?= site_url("tabla1/ajax_lista") ?>',
-                type: 'GET'
+                type: 'GET',
+                data: function(d) {
+                    //agregar parametros personalizados para filtros
+                    d.nombre = $('#filtroNombre').val();
+                    d.activo = $('#filtroActivo').val();
+                    d.fecha_desde = $('#filtroFechaDesde').val();
+                }
             },
             columns: [{
                     data: 0
@@ -284,9 +329,19 @@
                         modal.hide();
                         $('#formRegistro')[0].reset();
                         tabla.ajax.reload(null, false);
-                        alert('Guardado correctamente');
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Guardado',
+                        text: 'Registro guardado correctamente',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
                     } else {
-                        alert('Error al guardar');
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo guardar el registro'
+                    });
                     }
                 }
             });
@@ -343,16 +398,48 @@
         // Eliminar 
         $(document).on('click', '.btn-eliminar', function() {
             var id = $(this).data('id');
-            if (confirm("¿Eliminar registro?")) {
+
+            Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Este registro se eliminará permanentemente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
                 $.ajax({
                     url: "<?= site_url('tabla1/eliminar') ?>/" + id,
                     type: "POST",
-                    success: function() {
-                        tabla.ajax.reload(null, false); // 🔥 recarga SOLO la tabla 
+                    dataType: 'json',
+                    success: function(response) {
+
+                        tabla.ajax.reload(null, false);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eliminado',
+                            text: 'Registro eliminado correctamente',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se pudo eliminar el registro'
+                        });
                     }
                 });
+
             }
         });
+    });
     </script>
 </body>
 

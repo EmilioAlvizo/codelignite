@@ -21,6 +21,11 @@ class Tabla1 extends CI_Controller {
 
     // Endpoint Ajax para DataTables
     public function ajax_lista() {
+        // filtros personalizados
+        $nombre = $this->input->get('nombre');
+        $activo = $this->input->get('activo');
+        $fecha_desde = $this->input->get('fecha_desde');
+
         // Parámetros que envía DataTables automáticamente
         $draw      = intval($this->input->get('draw'));
         $start     = intval($this->input->get('start'));
@@ -30,8 +35,9 @@ class Tabla1 extends CI_Controller {
         $orden_dir = $this->input->get('order')[0]['dir'] ?? 'asc';
 
         $total     = $this->Tabla1_model->contar_total();
-        $filtrado  = $this->Tabla1_model->contar_filtrado($busqueda);
-        $registros = $this->Tabla1_model->obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir);
+        //se modifican estos 2 para los filtros personalizados
+        $filtrado  = $this->Tabla1_model->contar_filtrado($busqueda, $nombre, $activo, $fecha_desde);
+        $registros = $this->Tabla1_model->obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir, $nombre, $activo, $fecha_desde);
 
         $data = array();
         foreach ($registros as $row) {
@@ -106,10 +112,9 @@ class Tabla1 extends CI_Controller {
 
     public function eliminar($numero) {
         if ($this->Tabla1_model->eliminar($numero)) {
-            echo "<script>tabla.ajax.reload(null, false);</script>";
-            //redirect('tabla1');
-        }   else {
-            echo "error al eliminar";
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
         }
     }
 

@@ -83,20 +83,40 @@ class Tabla1_model extends CI_Model
         return $this->db->count_all('tabla_1');
     }
 
-    public function contar_filtrado($busqueda)
+    public function contar_filtrado($busqueda, $nombre, $activo, $fecha_desde)
     {
         if ($busqueda !== '') {
             $this->_aplicar_busqueda($busqueda);
+        }
+        //aplicar filtros personalizados
+        if ($nombre !== '') {
+            $this->db->like('nombre', $nombre);
+        }
+        if ($activo !== '') {
+            $this->db->where('activo', $activo);
+        }
+        if ($fecha_desde !== '') {
+            $this->db->where('fecha_registro >=', $fecha_desde);
         }
         $this->db->from('tabla_1');
         return $this->db->count_all_results();
     }
 
-    public function obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir)
+    public function obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir, $nombre, $activo, $fecha_desde)
     {
         // Búsqueda global
         if ($busqueda !== '') {
             $this->_aplicar_busqueda($busqueda);
+        }
+        //aplicar filtros personalizados
+        if ($nombre !== '') {
+            $this->db->like('nombre', $nombre);
+        }
+        if ($activo !== '') {
+            $this->db->where('activo', $activo);
+        }
+        if ($fecha_desde !== '') {
+            $this->db->where('fecha_registro >=', $fecha_desde);
         }
 
         // Ordenamiento (validar que la columna exista para evitar SQL injection)

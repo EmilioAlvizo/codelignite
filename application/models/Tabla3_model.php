@@ -59,22 +59,39 @@ class Tabla3_model extends CI_Model {
     }
 
     // contar filtrado
-    public function contar_filtrado($busqueda){
-
-        $this->db->from($this->table);
+    public function contar_filtrado($busqueda,$nombre,$estado,$fcaptura){
 
         if($busqueda!=''){
             $this->_busqueda($busqueda);
         }
-
+        if ($nombre !== '') {
+            $this->db->like('nombre', $nombre);
+        }
+        if ($estado !== '') {
+            $this->db->where('estado', $estado);
+        }
+        if ($fcaptura !== '') {
+            $this->db->where('fcaptura >=', $fcaptura);
+        }
+        
+        $this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // obtener pagina
-    public function obtener_pagina($start,$length,$busqueda,$orden_col,$orden_dir){
+    public function obtener_pagina($start,$length,$busqueda,$orden_col,$orden_dir,$nombre,$estado,$fcaptura){
 
         if($busqueda!=''){
             $this->_busqueda($busqueda);
+        }
+        if ($nombre !== '') {
+            $this->db->like('nombre', $nombre);
+        }
+        if ($estado !== '') {
+            $this->db->where('estado', $estado);
+        }
+        if ($fcaptura !== '') {
+            $this->db->where('fcaptura >=', $fcaptura);
         }
 
         if(isset($this->columnas[$orden_col])){

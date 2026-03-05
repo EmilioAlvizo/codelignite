@@ -14,11 +14,15 @@ class Tabla3 extends CI_Controller {
     }
 
     public function index(){
+        $this->load->view('navbar/navbar');
         $this->load->view('Tabla3/lista');
     }
 
     // DataTables AJAX
     public function ajax_lista(){
+        $nombre = $this->input->get('nombre');
+        $estado = $this->input->get('estado');
+        $fcaptura = $this->input->get('fcaptura');
 
         $draw   = intval($this->input->get('draw'));
         $start  = intval($this->input->get('start'));
@@ -30,8 +34,9 @@ class Tabla3 extends CI_Controller {
         $orden_dir = $this->input->get('order')[0]['dir'] ?? 'asc';
 
         $total     = $this->Tabla3_model->contar_total();
-        $filtrado  = $this->Tabla3_model->contar_filtrado($busqueda);
-        $registros = $this->Tabla3_model->obtener_pagina($start,$length,$busqueda,$orden_col,$orden_dir);
+
+        $filtrado  = $this->Tabla3_model->contar_filtrado($busqueda, $nombre, $estado, $fcaptura);
+        $registros = $this->Tabla3_model->obtener_pagina($start,$length,$busqueda,$orden_col,$orden_dir,$nombre,$estado,$fcaptura);
 
         $data = [];
 

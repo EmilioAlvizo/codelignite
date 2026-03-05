@@ -14,8 +14,52 @@
 <body>
     <div class="container mt-4">
         <!-- <div style="height: 1000px; background-color: #8ac0f5;"></div> -->
+        <div class="mt-4 mb-4 p-3 bg-light rounded border">
+            <h3>Filtros personalizados</h3>
 
-        
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <label>Nombre:</label>
+                    <input type="text" id="filtroNombre" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label>UUID:</label>
+                    <input type="text" id="filtroUUID" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label>Activo:</label>
+                    <select id="filtroActivo" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label>Fecha Registro Desde:</label>
+                    <input type="date" id="filtroFechaDesde" class="form-control">
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <button id="btnBorrarFiltro" class="btn btn-secondary w-100">Borrar filtros</button>
+                </div>
+
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+
+            </div>
+        </div>
+
         <h1>Tabla 1 - Registros</h1>
 
         <!-- Botón que abre el modal -->
@@ -23,7 +67,7 @@
             + Nuevo Registro
         </button>
 
-        <table id="miTabla" class="table table-bordered table-striped">
+        <table id="miTabla" class="table table-bordered table-striped table-hover align-middle">
             <thead>
                 <tr>
                     <th>Numero</th>
@@ -50,35 +94,7 @@
             <tbody></tbody> <!-- Ajax llena esto -->
         </table>
 
-        <h2>filtros personalizados</h2>
-
-        <div class="row mb-3">
-
-            <div class="col-md-3">
-                <label>Nombre:</label>
-                <input type="text" id="filtroNombre" class="form-control">
-            </div>
-
-            <div class="col-md-3">
-                <label>Activo:</label>
-                <select id="filtroActivo" class="form-select">
-                    <option value="">Todos</option>
-                    <option value="1">Sí</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <label>Fecha Registro Desde:</label>
-                <input type="date" id="filtroFechaDesde" class="form-control">
-            </div>
-
-            <div class="col-md-3">
-                <label>&nbsp;</label>
-                <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
-            </div>
-
-        </div>
+        
 
     </div>
 
@@ -206,6 +222,15 @@
             tabla.ajax.reload();
         });
 
+        //limpiar filtros
+        $('#btnBorrarFiltro').click(function(){
+            $('#filtroNombre').val('');
+            $('#filtroUUID').val('');
+            $('#filtroActivo').val('');
+            $('#filtroFechaDesde').val('');
+            tabla.ajax.reload();
+        });
+
         var tabla = $('#miTabla').DataTable({
             scrollX: true,
             serverSide: true, // activa el modo server-side
@@ -216,6 +241,7 @@
                 data: function(d) {
                     //agregar parametros personalizados para filtros
                     d.nombre = $('#filtroNombre').val();
+                    d.uuid = $('#filtroUUID').val();
                     d.activo = $('#filtroActivo').val();
                     d.fecha_desde = $('#filtroFechaDesde').val();
                 }

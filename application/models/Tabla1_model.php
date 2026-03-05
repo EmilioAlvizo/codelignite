@@ -83,7 +83,7 @@ class Tabla1_model extends CI_Model
         return $this->db->count_all('tabla_1');
     }
 
-    public function contar_filtrado($busqueda, $nombre, $activo, $fecha_desde)
+    public function contar_filtrado($busqueda, $nombre, $uuid, $activo, $fecha_desde)
     {
         if ($busqueda !== '') {
             $this->_aplicar_busqueda($busqueda);
@@ -91,6 +91,9 @@ class Tabla1_model extends CI_Model
         //aplicar filtros personalizados
         if ($nombre !== '') {
             $this->db->like('nombre', $nombre);
+        }
+        if ($uuid !== '') {
+            $this->db->like('uuid', $uuid);
         }
         if ($activo !== '') {
             $this->db->where('activo', $activo);
@@ -102,7 +105,7 @@ class Tabla1_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir, $nombre, $activo, $fecha_desde)
+    public function obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir, $nombre, $uuid, $activo, $fecha_desde)
     {
         // Búsqueda global
         if ($busqueda !== '') {
@@ -111,6 +114,9 @@ class Tabla1_model extends CI_Model
         //aplicar filtros personalizados
         if ($nombre !== '') {
             $this->db->like('nombre', $nombre);
+        }
+        if ($uuid !== '') {
+            $this->db->like('uuid', $uuid);
         }
         if ($activo !== '') {
             $this->db->where('activo', $activo);

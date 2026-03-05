@@ -13,6 +13,13 @@ class Tabla1 extends CI_Controller {
         $this->load->model('Tabla1_model');
         $this->load->helper(['url', 'data']);
     }
+    
+    public function index() {
+        //$data['registros'] = $this->Tabla1_model->obtener_todos();
+        //$this->load->view('tabla1/lista', $data);
+        $this->load->view('navbar/navbar');
+        $this->load->view('tabla1/lista');
+    }
 
     public function obtener($numero) {
         $registro = $this->Tabla1_model->obtener_por_id($numero);
@@ -23,6 +30,7 @@ class Tabla1 extends CI_Controller {
     public function ajax_lista() {
         // filtros personalizados
         $nombre = $this->input->get('nombre');
+        $uuid = $this->input->get('uuid');
         $activo = $this->input->get('activo');
         $fecha_desde = $this->input->get('fecha_desde');
 
@@ -36,8 +44,8 @@ class Tabla1 extends CI_Controller {
 
         $total     = $this->Tabla1_model->contar_total();
         //se modifican estos 2 para los filtros personalizados
-        $filtrado  = $this->Tabla1_model->contar_filtrado($busqueda, $nombre, $activo, $fecha_desde);
-        $registros = $this->Tabla1_model->obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir, $nombre, $activo, $fecha_desde);
+        $filtrado  = $this->Tabla1_model->contar_filtrado($busqueda, $nombre, $uuid, $activo, $fecha_desde);
+        $registros = $this->Tabla1_model->obtener_pagina($start, $length, $busqueda, $orden_col, $orden_dir, $nombre, $uuid, $activo, $fecha_desde);
 
         $data = array();
         foreach ($registros as $row) {
@@ -74,12 +82,7 @@ class Tabla1 extends CI_Controller {
         ]);
     }
     
-    // Listar todos los registros
-    public function index() {
-        //$data['registros'] = $this->Tabla1_model->obtener_todos();
-        //$this->load->view('tabla1/lista', $data);
-        $this->load->view('tabla1/lista');
-    }
+    
 
     // Guardar nuevo registro
     public function guardar() {

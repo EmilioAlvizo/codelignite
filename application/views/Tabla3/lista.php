@@ -12,7 +12,53 @@
 </head>
 
 <body>
+
     <div class="container mt-4">
+
+        <div class="mt-4 mb-4 p-3 bg-light rounded border">
+            <h3>Filtros personalizados</h3>
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <label>Nombre:</label>
+                    <input type="text" id="filtroNombre" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label>Estado:</label>
+                    <select id="filtroEstado" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="Invalido">Invalido</option>
+                        <option value="Valido">Valido</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Error">Error</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label>Fecha Captura Desde:</label>
+                    <input type="date" id="filtroFechaDesde" class="form-control">
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <button id="btnBorrarFiltro" class="btn btn-secondary w-100">Borrar filtros</button>
+                </div>
+
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+
+            </div>
+        </div>
+
+
         <!-- <div style="height: 1000px; background-color: #8ac0f5;"></div> -->
 
         <h1>Tabla 3 - clientes con deudas</h1>
@@ -37,50 +83,7 @@
         </table>
     </div>
 
-    <!-- Modal Bootstrap 5 -->
-    <!-- <div class="modal fade" id="modalFormulario" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tituloModal">Nuevo Registro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formRegistro">
-                        <input type="hidden" id="numero" name="numero">
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Edad:</label>
-                                <input type="number" class="form-control" name="edad" id="edad" required>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Cantidad:</label>
-                                <input type="number" class="form-control" name="cantidad" id="cantidad">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Población:</label>
-                                <input type="number" class="form-control" name="poblacion" id="poblacion">
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Porcentaje:</label>
-                                <input type="number" step="0.01" class="form-control" name="porcentaje" id="porcentaje">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script> <!-- moment.js -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -91,13 +94,32 @@
 
 
     <script>
+        // recargar tabla al hacer click en "filtrar"
+        $('#btnFiltrar').click(function(){
+            tabla.ajax.reload();
+        });
+
+        //limpiar filtros
+        $('#btnBorrarFiltro').click(function(){
+            $('#filtroNombre').val('');
+            $('#filtroEstado').val('');
+            $('#filtroFechaDesde').val('');
+            tabla.ajax.reload();
+        });
+
         var tabla = $('#miTabla3').DataTable({
             scrollX: true,
             serverSide: true, // activa el modo server-side
             processing: true, // muestra "Procesando..." mientras carga
             ajax: {
                 url: '<?= site_url("tabla3/ajax_lista") ?>',
-                type: 'GET'
+                type: 'GET',
+                data: function(d) {
+                    //agregar parametros personalizados para filtros
+                    d.nombre = $('#filtroNombre').val();
+                    d.estado = $('#filtroEstado').val();
+                    d.fcaptura = $('#filtroFechaDesde').val();
+                }
             },
             columns: [{
                     data: 'cliente_id'

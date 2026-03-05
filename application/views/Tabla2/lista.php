@@ -11,6 +11,8 @@
 </head>
 
 <body>
+    <?php $this->load->view('navbar/navbar'); ?>
+
     <h1>Tabla 2 - Registros</h1>
     <a href="<?php echo base_url('tabla2/crear'); ?>">Nuevo Registro</a>
 

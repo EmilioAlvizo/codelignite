@@ -8,11 +8,12 @@
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" /> -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap5.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>">
     <title>tabla 1</title>
 </head>
 
 <body>
-    <div class="container mt-4">
+    <div class="container mt-4 ">
         <!-- <div style="height: 1000px; background-color: #8ac0f5;"></div> -->
         <div class="mt-4 mb-4 p-3 bg-light rounded border">
             <h3>Filtros personalizados</h3>

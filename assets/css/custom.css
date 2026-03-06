@@ -1,0 +1,89 @@
+/* ── xxxl ≥ 1600px (ya lo tenías) ── */
+.container-xxxl {
+  width: 100%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1600px) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl,
+  .container-xxl,
+  .container-xxxl {
+    max-width: 1520px;
+  }
+}
+
+/* ── xxxxl ≥ 1800px ── */
+.container-xxxxl {
+  width: 100%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1800px) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl,
+  .container-xxl,
+  .container-xxxl,
+  .container-xxxxl {
+    max-width: 1720px;
+  }
+}
+
+/* ── xxxxxl ≥ 2000px ── */
+.container-xxxxxl {
+  width: 100%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 2000px) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl,
+  .container-xxl,
+  .container-xxxl,
+  .container-xxxxl,
+  .container-xxxxxl {
+    max-width: 1920px;
+  }
+}
+
+/* ── xxxxxxl ≥ 2400px ── */
+.container-xxxxxxl {
+  width: 100%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 2400px) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl,
+  .container-xxl,
+  .container-xxxl,
+  .container-xxxxl,
+  .container-xxxxxl,
+  .container-xxxxxxl {
+    max-width: 2320px;
+  }
+}
